@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="fc21b72e-34ca-4c8a-a5ff-57bd5973219d" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="57e76151-3ef7-4c6a-abff-23e920c372f4" >
+		<jms:active-mq-connection username="admin" password="admin" >
+			<jms:factory-configuration brokerUrl="tcp://localhost:61616" />
+		</jms:active-mq-connection>
+	</jms:config>
+	<jms:config name="JMS_Config1" doc:name="JMS Config" doc:id="e6685cd0-d2fc-4572-8d36-021a8b040124" >
+		<jms:active-mq-connection username="admin" password="admin" >
+			<jms:factory-configuration brokerUrl="tcp://localhost:61616" />
+		</jms:active-mq-connection>
+	</jms:config>
+	<jms:config name="JMS_Config2" doc:name="JMS Config" doc:id="e518440f-3b57-4a71-916c-a7de1559db63" >
+		<jms:active-mq-connection username="admin" password="admin" >
+			<jms:factory-configuration brokerUrl="tcp://localhost:61616" />
+		</jms:active-mq-connection>
+	</jms:config>
+	<jms:config name="JMS_Config3" doc:name="JMS Config" doc:id="1b211126-243b-45f1-b138-f568a60e8788" >
+		<jms:active-mq-connection username="admin" password="admin" >
+			<jms:factory-configuration brokerUrl="tcp://localholst:61616" />
+		</jms:active-mq-connection>
+	</jms:config>
+	<flow name="choiserouterpoc1Flow" doc:id="273f9c2d-f054-4cbc-b277-07e7c779f6af" >
+		<http:listener doc:name="Listener" doc:id="94e10a29-83c3-4a08-82f5-18aaf81c44b3" config-ref="HTTP_Listener_config" path="/test"/>
+		<jms:publish-consume doc:name="Publish consume" doc:id="89d0b829-6f7d-482a-9ed4-6627f2163a32" config-ref="JMS_Config2" destination="ali"/>
+		<jms:consume doc:name="Consume" doc:id="51e19d72-33f9-40de-92b5-c15f227b5f05" config-ref="JMS_Config3" destination="ali">
+			<jms:consumer-type >
+				<jms:queue-consumer />
+			</jms:consumer-type>
+		</jms:consume>
+		<logger level="INFO" doc:name="Logger" doc:id="b01c917c-dce3-4b60-965d-09859bcf9ec1" message="#[payload]"/>
+		<choice doc:name="Choice" doc:id="16852122-f842-4970-ae20-a0bc1ec52fb2" >
+			<when expression="#[payload==payload]">
+				<logger level="INFO" doc:name="Logger" doc:id="9e71cc1b-f09d-4b5c-b66d-a01215e2471a" />
+			</when>
+			<when expression="#[payload]">
+				<logger level="INFO" doc:name="Logger" doc:id="8132dc64-7ec1-43e5-83db-f6b6c3b5da1c" />
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="459a0ce9-2847-4199-b453-0f4d386ec658" />
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="99600bb4-3a1c-4d91-a9a3-def4f0f48ac0" message="#[payload]"/>
+	</flow>
+</mule>
