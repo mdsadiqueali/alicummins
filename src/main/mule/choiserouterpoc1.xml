@@ -31,11 +31,6 @@ http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/
 	<flow name="choiserouterpoc1Flow" doc:id="273f9c2d-f054-4cbc-b277-07e7c779f6af" >
 		<http:listener doc:name="Listener" doc:id="94e10a29-83c3-4a08-82f5-18aaf81c44b3" config-ref="HTTP_Listener_config" path="/test"/>
 		<jms:publish-consume doc:name="Publish consume" doc:id="89d0b829-6f7d-482a-9ed4-6627f2163a32" config-ref="JMS_Config2" destination="ali"/>
-		<jms:consume doc:name="Consume" doc:id="51e19d72-33f9-40de-92b5-c15f227b5f05" config-ref="JMS_Config3" destination="ali">
-			<jms:consumer-type >
-				<jms:queue-consumer />
-			</jms:consumer-type>
-		</jms:consume>
 		<logger level="INFO" doc:name="Logger" doc:id="b01c917c-dce3-4b60-965d-09859bcf9ec1" message="#[payload]"/>
 		<choice doc:name="Choice" doc:id="16852122-f842-4970-ae20-a0bc1ec52fb2" >
 			<when expression="#[payload==payload]">
@@ -49,5 +44,6 @@ http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/
 			</otherwise>
 		</choice>
 		<logger level="INFO" doc:name="Logger" doc:id="99600bb4-3a1c-4d91-a9a3-def4f0f48ac0" message="#[payload]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="3d4b85f5-40e8-499b-b632-4cbf9f9d8278" />
 	</flow>
 </mule>
